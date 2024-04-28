@@ -10,9 +10,11 @@ def root():
 
 
 @app.get(
-    "/shortener", status_code=status.HTTP_201_CREATED, response_model=schemas.LongUrl
+    "/api/v1/shorturl",
+    status_code=status.HTTP_201_CREATED,
+    response_model=schemas.LongUrl,
 )
 def shortener(input: schemas.LongUrl):
-    print(input.long_url)
+    # print(input.long_url)
     result = schemas.ShortUrl(short_url=input.long_url)
     return result
