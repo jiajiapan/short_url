@@ -4,7 +4,7 @@ import logging
 
 
 class DBAccessor:
-            
+
     def __init__(self, settings):
         self.conn = psycopg2.connect(
             host=settings.database_host,
@@ -19,7 +19,7 @@ class DBAccessor:
         cursor.execute("""SELECT COUNT(*) FROM url WHERE longurl = (%s)""", (long_url,))
         res = cursor.fetchone()
         count = res["count"]
-        logger = logging.getLogger('myapp.log')
+        logger = logging.getLogger("myapp.log")
         if not count:
             logger.info("longurl doesn't exist!")
             return False
@@ -58,5 +58,5 @@ class DBAccessor:
         cursor.execute("""SELECT * FROM url WHERE shorturl = (%s)""", (short_url,))
         res = cursor.fetchone()
         if res:
-            return res['longurl']
+            return res["longurl"]
         return None

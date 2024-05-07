@@ -10,7 +10,8 @@ app = FastAPI()
 
 my_settings = config.Settings()
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('myapp.log')
+logger = logging.getLogger("myapp.log")
+
 
 @app.get("/")
 def root():
@@ -31,6 +32,7 @@ def shorten_request(input: schemas.LongUrl):
     result = schemas.ShortUrl(short_url=shorturl)
     return result
 
+
 @app.get(
     "/api/v1/longurl",
     status_code=status.HTTP_200_OK,
@@ -45,5 +47,6 @@ def redirect_request(input: schemas.ShortUrl):
         return schemas.LongUrl(long_url=res)
     else:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"cannot find this short url: {shorturl}"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"cannot find this short url: {shorturl}",
         )
