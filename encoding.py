@@ -24,13 +24,17 @@ class Encoder:
             seven_bits = hex_value[2:]
         return seven_bits
 
-    def check_collision(self, input):
+    def check_collision(self, long_url, short_url):
         """
-        Check whether there is a collision when getting seven bits.
+        Check whether there is a collision given long_url and corresponding short_url.
         """
-        shorturl = self.get_bits(input)
-        longurl = self.db_accessor.get_longurl(shorturl)
-        if longurl and longurl != input:
+        if self.db_accessor.longurl_exists(long_url):
+            if self.db_accessor.get_shorturl(long_url) == short_url:
+                return False
+            return True
+        if self.db_accessor.shorturl_exists(short_url):
+            if self.db_accessor.get_longurl(short_url) == long_url:
+                return False
             return True
         return False
 
@@ -39,12 +43,14 @@ class Encoder:
         Get the final encoding result. If there is no collision, get seven bits.
         If not, add a character, and get new seven bits as the encoding result.
         """
-        check = self.check_collision(input)
+        short_url = self.get_bits(input)
+        check = self.check_collision(input, short_url)
         identifier = "a"
         new_input = input
         while check:
             new_input = new_input + identifier
             logger.info("new_input:", new_input)
-            check = self.check_collision(new_input)
+            short_url = self.get_bits(new_input)
+            check = self.check_collision(new_input, short_url)
             identifier = chr(ord(identifier) + 1)
-        return self.get_bits(new_input)
+        return short_url
