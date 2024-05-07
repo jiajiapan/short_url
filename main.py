@@ -38,8 +38,9 @@ def shorten_url(input: schemas.LongUrl):
     shorturl = url_encoder.get_encoding(longurl)
     url_accessor = DBAccessor(url_settings)
     url_accessor.insert_url_data(longurl, shorturl)
-    logger.info("longurl: %s", longurl)
-    logger.info("shorturl: %s", shorturl)
+
+    logger.info("longurl: %s, shorturl: %s", longurl, shorturl)
+
     result = schemas.ShortUrl(short_url=shorturl)
     return result
 

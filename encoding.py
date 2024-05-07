@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class Encoder:
 
     def __init__(self, settings):
-        self.get_db = DBAccessor(settings)
+        self.db_accessor = DBAccessor(settings)
 
     def get_bits(self, input):
         """
@@ -29,7 +29,7 @@ class Encoder:
         Check whether there is a collision when getting seven bits.
         """
         shorturl = self.get_bits(input)
-        longurl = self.get_db.get_longurl(shorturl)
+        longurl = self.db_accessor.get_longurl(shorturl)
         if longurl and longurl != input:
             return True
         return False
