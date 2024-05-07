@@ -75,3 +75,14 @@ class DBAccessor:
         if res:
             return res["longurl"]
         return None
+
+    def get_shorturl(self, long_url):
+        """
+        Given a longurl, find the corresponding shorturl in the database.
+        """
+        cursor = self.conn.cursor()
+        cursor.execute("""SELECT * FROM url WHERE longurl = (%s)""", (long_url,))
+        res = cursor.fetchone()
+        if res:
+            return res["shorturl"]
+        return None
