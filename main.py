@@ -1,11 +1,16 @@
 from fastapi import FastAPI, status, HTTPException
 import schemas
 from dbaccessor import DBAccessor
-from encoding import encoding
+from encoding import Encoding
 from sqlalchemy.orm import Session
+import config
+import logging
 
 app = FastAPI()
 
+my_settings = config.Settings()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('myapp.log')
 
 @app.get("/")
 def root():
@@ -19,12 +24,12 @@ def root():
 )
 def shorten_request(input: schemas.LongUrl):
     longurl = input.long_url
-    shorturl = encoding.hashing(longurl)
-    get_db = DBAccessor()
+    my_encoding = Encoding(my_settings)
+    shorturl = my_encoding.get_encoding(longurl)
+    get_db = DBAccessor(my_settings)
     get_db.insert_url_data(longurl, shorturl)
     result = schemas.ShortUrl(short_url=shorturl)
     return result
-
 
 @app.get(
     "/api/v1/longurl",
@@ -33,12 +38,12 @@ def shorten_request(input: schemas.LongUrl):
 )
 def redirect_request(input: schemas.ShortUrl):
     shorturl = input.short_url
-    get_db = DBAccessor()
+    my_settings = config.Settings()
+    get_db = DBAccessor(my_settings)
     res = get_db.get_longurl(shorturl)
     if res:
         return schemas.LongUrl(long_url=res)
     else:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"cannot find this short url: {shorturl}",
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"cannot find this short url: {shorturl}"
         )
