@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status, HTTPException
-import schemas
-from dbaccessor import DBAccessor
-from encoding import Encoder
-import config
+from . import schemas
+from .dbaccessor import DBAccessor
+from .encoding import Encoder
+from . import config
 import logging
 
 app = FastAPI()
@@ -54,7 +54,7 @@ The website to realize redirecting method
 """
 
 
-@app.get(
+@app.post(
     "/api/v1/longurl",
     status_code=status.HTTP_200_OK,
     response_model=schemas.LongUrl,
