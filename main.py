@@ -9,15 +9,18 @@ import logging
 app = FastAPI()
 
 my_settings = config.Settings()
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("myapp.log")
 
 
+# The main website
 @app.get("/")
 def root():
     return {"message": "this is short url website."}
 
 
+# The website to realize shortening method
 @app.post(
     "/api/v1/shorturl",
     status_code=status.HTTP_201_CREATED,
@@ -33,6 +36,7 @@ def shorten_request(input: schemas.LongUrl):
     return result
 
 
+# The website to realize redirecting method
 @app.get(
     "/api/v1/longurl",
     status_code=status.HTTP_200_OK,
@@ -43,6 +47,7 @@ def redirect_request(input: schemas.ShortUrl):
     my_settings = config.Settings()
     get_db = DBAccessor(my_settings)
     res = get_db.get_longurl(shorturl)
+
     if res:
         return schemas.LongUrl(long_url=res)
     else:

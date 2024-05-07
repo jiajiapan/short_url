@@ -5,6 +5,7 @@ import logging
 
 class DBAccessor:
 
+    # Connect the database, all the settings are defined in config.py and .env.
     def __init__(self, settings):
         self.conn = psycopg2.connect(
             host=settings.database_host,
@@ -14,6 +15,7 @@ class DBAccessor:
             cursor_factory=RealDictCursor,
         )
 
+    # Check whether this longurl exists in the database.
     def longurl_exists(self, long_url):
         cursor = self.conn.cursor()
         cursor.execute("""SELECT COUNT(*) FROM url WHERE longurl = (%s)""", (long_url,))
@@ -27,6 +29,7 @@ class DBAccessor:
             logger.info("longurl exists!")
             return True
 
+    # Check whether this shorturl exists in the database.
     def shorturl_exists(self, short_url):
         cursor = self.conn.cursor()
         cursor.execute(
@@ -34,14 +37,16 @@ class DBAccessor:
         )
         res = cursor.fetchone()
         count = res["count"]
-        print("count = ", count)
+        logger = logging.getLogger("myapp.log")
+
         if not count:
-            print("shorturl doesn't exist!")
+            logger.info("shorturl doesn't exist!")
             return False
         else:
-            print("shorturl exists!")
+            logger.info("shorturl exists!")
             return True
 
+    # Insert the coupling data: longurl and shorturl.
     def insert_url_data(self, long_url, short_url):
         cursor = self.conn.cursor()
         if not self.longurl_exists(long_url):
@@ -51,8 +56,10 @@ class DBAccessor:
             )
             self.conn.commit()
             self.conn.close()
-            print("Data inserted successfully.")
+            logger = logging.getLogger("myapp.log")
+            logger.info("Data inserted successfully.")
 
+    # Given a shorturl, find the corresponding longurl in the database.
     def get_longurl(self, short_url):
         cursor = self.conn.cursor()
         cursor.execute("""SELECT * FROM url WHERE shorturl = (%s)""", (short_url,))
