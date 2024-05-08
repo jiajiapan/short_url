@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status, HTTPException
-from . import schemas
-from .dbaccessor import DBAccessor
-from .encoding import Encoder
-from . import config
+from app import schemas
+from app.dbaccessor import DBAccessor
+from app.encoder import Encoder
+from app import config
 import logging
 
 app = FastAPI()
