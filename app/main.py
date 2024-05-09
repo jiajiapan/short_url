@@ -34,7 +34,7 @@ The website to realize shortening method
 )
 def shorten_url(data: schemas.LongUrl):
     db_accessor = DBAccessor(url_settings)
-    url_encoder = Encoder(url_settings)
+    url_encoder = Encoder(db_accessor)
     result = shortern_url_processor(data, db_accessor, url_encoder)
     return result
 
