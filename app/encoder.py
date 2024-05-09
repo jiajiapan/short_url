@@ -1,5 +1,5 @@
 import zlib
-from dbaccessor import DBAccessor
+from app.dbaccessor import DBAccessor
 import logging
 
 logger = logging.getLogger(__name__)
