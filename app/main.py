@@ -38,7 +38,10 @@ def shorten_url(data: schemas.LongUrl):
     result = shortern_url_processor(data, db_accessor, url_encoder)
     return result
 
-def shortern_url_processor(data: schemas.LongUrl, db_accessor:DBAccessor, url_encoder:Encoder):
+
+def shortern_url_processor(
+    data: schemas.LongUrl, db_accessor: DBAccessor, url_encoder: Encoder
+):
     longurl = data.long_url
 
     if db_accessor.longurl_exists(longurl):
@@ -51,6 +54,7 @@ def shortern_url_processor(data: schemas.LongUrl, db_accessor:DBAccessor, url_en
 
     result = schemas.ShortUrl(short_url=shorturl)
     return result
+
 
 """
 The website to realize redirecting method
@@ -66,7 +70,8 @@ def redirect_url(data: schemas.ShortUrl):
     db_accessor = DBAccessor(url_settings)
     return redirect_url_processor(data, db_accessor)
 
-def redirect_url_processor(data: schemas.ShortUrl, db_accessor:DBAccessor):
+
+def redirect_url_processor(data: schemas.ShortUrl, db_accessor: DBAccessor):
     shorturl = data.short_url
     if db_accessor.shorturl_exists(shorturl):
         longurl = db_accessor.get_longurl(shorturl)

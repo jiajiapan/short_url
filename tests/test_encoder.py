@@ -1,10 +1,11 @@
-import app.encoder
+from app.encoder import Encoder
 import app.schemas
 from unittest.mock import Mock
 
 
 # def test_get_bits():
-#     app.main.root = Mock(return_value = {"message": "this is short url website."})
+#     encoder = Encoder()
+#     encoder.get_bits = Mock(return_value = {"message": "this is short url website."})
 #     result = app.main.root()
 #     assert result == {"message": "this is short url website."}
 #     app.main.root.assert_called_once_with()

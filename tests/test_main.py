@@ -2,6 +2,7 @@ from app.main import shortern_url_processor, redirect_url_processor
 from app.schemas import LongUrl, ShortUrl
 from unittest.mock import Mock
 
+
 def test_get_short_url():
     Long_Url = LongUrl(long_url="www5")
     Short_Url = ShortUrl(short_url="b0df12f")
@@ -15,9 +16,12 @@ def test_get_short_url():
 
     shortern_url_processor = Mock(return_value=Short_Url)
 
-    result = shortern_url_processor(Long_Url,db_accessor_mock, url_encoder_mock)
+    result = shortern_url_processor(Long_Url, db_accessor_mock, url_encoder_mock)
     assert result == Short_Url
-    shortern_url_processor.assert_called_once_with(Long_Url,db_accessor_mock, url_encoder_mock)
+    shortern_url_processor.assert_called_once_with(
+        Long_Url, db_accessor_mock, url_encoder_mock
+    )
+
 
 def test_get_long_url():
     Long_Url = LongUrl(long_url="www5")
@@ -29,10 +33,9 @@ def test_get_long_url():
 
     redirect_url_processor = Mock(return_value=Long_Url)
 
-    result = redirect_url_processor(Short_Url,db_accessor_mock)
+    result = redirect_url_processor(Short_Url, db_accessor_mock)
     assert result == Long_Url
-    redirect_url_processor.assert_called_once_with(Short_Url,db_accessor_mock)
-
+    redirect_url_processor.assert_called_once_with(Short_Url, db_accessor_mock)
 
 
 # from fastapi.testclient import TestClient
