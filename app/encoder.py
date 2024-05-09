@@ -7,8 +7,8 @@ logger = logging.getLogger(__name__)
 
 class Encoder:
 
-    def __init__(self, db_accessor_input):
-        self.db_accessor = db_accessor_input
+    def __init__(self, db_accessor):
+        self.db_accessor = db_accessor
 
     def get_bits(self, data):
         """
