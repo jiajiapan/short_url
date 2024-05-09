@@ -1,4 +1,4 @@
-.PHONY: venv setup fmt lint
+.PHONY: venv setup fmt lint test
 
 WORKDIR?=.
 VENVDIR?=$(WORKDIR)/.venv
@@ -15,4 +15,7 @@ fmt: setup
 	$(VENV)/black $(WORKDIR)
 
 lint: setup
-	$(VENV)black --check -diff $(WORKDIR)
+	$(VENV)/black --check -diff $(WORKDIR)
+
+test: setup
+	$(VENV)/pytest -v
