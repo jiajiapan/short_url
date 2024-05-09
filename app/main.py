@@ -32,22 +32,25 @@ The website to realize shortening method
     status_code=status.HTTP_201_CREATED,
     response_model=schemas.ShortUrl,
 )
-def shorten_url(input: schemas.LongUrl):
-    longurl = input.long_url
-    url_accessor = DBAccessor(url_settings)
+def shorten_url(data: schemas.LongUrl):
+    db_accessor = DBAccessor(url_settings)
+    url_encoder = Encoder(url_settings)
+    result = shortern_url_processor(data, db_accessor, url_encoder)
+    return result
 
-    if url_accessor.longurl_exists(longurl):
-        shorturl = url_accessor.get_shorturl(longurl)
+def shortern_url_processor(data: schemas.LongUrl, db_accessor:DBAccessor, url_encoder:Encoder):
+    longurl = data.long_url
+
+    if db_accessor.longurl_exists(longurl):
+        shorturl = db_accessor.get_shorturl(longurl)
     else:
-        url_encoder = Encoder(url_settings)
         shorturl = url_encoder.get_encoding(longurl)
-        url_accessor.insert_url_data(longurl, shorturl)
+        db_accessor.insert_url_data(longurl, shorturl)
 
     logger.info("longurl: %s, shorturl: %s", longurl, shorturl)
 
     result = schemas.ShortUrl(short_url=shorturl)
     return result
-
 
 """
 The website to realize redirecting method
@@ -59,12 +62,14 @@ The website to realize redirecting method
     status_code=status.HTTP_200_OK,
     response_model=schemas.LongUrl,
 )
-def redirect_url(input: schemas.ShortUrl):
-    shorturl = input.short_url
-    url_accessor = DBAccessor(url_settings)
+def redirect_url(data: schemas.ShortUrl):
+    db_accessor = DBAccessor(url_settings)
+    return redirect_url_processor(data, db_accessor)
 
-    if url_accessor.shorturl_exists(shorturl):
-        longurl = url_accessor.get_longurl(shorturl)
+def redirect_url_processor(data: schemas.ShortUrl, db_accessor:DBAccessor):
+    shorturl = data.short_url
+    if db_accessor.shorturl_exists(shorturl):
+        longurl = db_accessor.get_longurl(shorturl)
         return schemas.LongUrl(long_url=longurl)
     else:
         raise HTTPException(
