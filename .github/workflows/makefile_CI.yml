@@ -4,7 +4,16 @@ on: [push, pull_request]
 
 jobs:
   build:
-  
+
+    environment:
+      name: testing
+
+    env:
+      DATABASE_HOST: ${{secrets.DATABASE_HOST}}
+      DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+
     runs-on: ubuntu-latest
 
     steps:
@@ -22,5 +31,3 @@ jobs:
 
       - name: test with pytest
         run: make test
-
-# test for CI.
