@@ -22,3 +22,5 @@ jobs:
 
       - name: test with pytest
         run: make test
+
+# test for CI.
