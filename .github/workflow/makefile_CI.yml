@@ -4,15 +4,21 @@ on: [push, pull_request]
 
 jobs:
   build:
+  
     runs-on: ubuntu-latest
+
     steps:
       - name: pulling git repo
         uses: actions/checkout@v4
+
       - name: set up virtual environment
         run: make venv
+
       - name: install dependencies
-        rin: make setup
+        run: make setup
+
       - name: check format
         run: make lint
+
       - name: test with pytest
         run: make test
