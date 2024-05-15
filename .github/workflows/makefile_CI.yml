@@ -49,8 +49,8 @@ jobs:
           context: ./
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/short_url:latest
+          push: false
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/short_url:2
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
