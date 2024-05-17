@@ -2,12 +2,17 @@ from fastapi import FastAPI, status, HTTPException
 from app import schemas
 from app.dbaccessor import DBAccessor
 from app.encoder import Encoder
-from app import config
+from app.settings import Settings
 import logging
+import os
 
 app = FastAPI()
 
-url_settings = config.Settings()
+DATABASE_HOST= os.getenv("DATABASE_HOST")
+DATABASE_NAME= os.getenv("DATABASE_NAME")
+DATABASE_USER= os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+url_settings = Settings(DATABASE_HOST,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -19,6 +24,7 @@ The main website
 
 @app.get("/")
 def root():
+    print()
     return {"message": "this is short url website."}
 
 

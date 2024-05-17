@@ -13,9 +13,10 @@ class DBAccessor:
         """
         self.conn = psycopg2.connect(
             host=settings.database_host,
-            database=settings.database_name,
+            dbname=settings.database_name,
             user=settings.database_user,
             password=settings.database_password,
+            port = '5432',
             cursor_factory=RealDictCursor,
         )
 
