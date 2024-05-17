@@ -8,11 +8,11 @@ import os
 
 app = FastAPI()
 
-DATABASE_HOST= os.getenv("DATABASE_HOST")
-DATABASE_NAME= os.getenv("DATABASE_NAME")
-DATABASE_USER= os.getenv("DATABASE_USER")
+DATABASE_HOST = os.getenv("DATABASE_HOST")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
-url_settings = Settings(DATABASE_HOST,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD)
+url_settings = Settings(DATABASE_HOST, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

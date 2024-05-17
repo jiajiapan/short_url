@@ -16,7 +16,7 @@ class DBAccessor:
             dbname=settings.database_name,
             user=settings.database_user,
             password=settings.database_password,
-            port = '5432',
+            port="5432",
             cursor_factory=RealDictCursor,
         )
 
