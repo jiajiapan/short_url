@@ -24,7 +24,6 @@ The main website
 
 @app.get("/")
 def root():
-    print()
     return {"message": "this is short url website."}
 
 
